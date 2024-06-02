@@ -9,14 +9,16 @@ import (
 	"net/http"
 )
 
-var templateCache map[string]*template.Template
-
-func SetTemplateCache(cache map[string]*template.Template) {
-	templateCache = cache
+type RenderTemplate struct {
+	templateCache map[string]*template.Template
 }
 
-func RenderTemplates(w http.ResponseWriter, tmpl string) {
-	myTemplate, ok := templateCache[tmpl]
+func CreateNewRenderTemplateInstance(cache map[string]*template.Template) *RenderTemplate {
+	return &RenderTemplate{cache}
+}
+
+func (rndr *RenderTemplate) RenderTemplates(w http.ResponseWriter, tmpl string) {
+	myTemplate, ok := rndr.templateCache[tmpl]
 	if !ok {
 		log.Fatal(errors.New("template is missing"))
 	}

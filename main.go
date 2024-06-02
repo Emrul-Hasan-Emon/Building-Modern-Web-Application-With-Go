@@ -13,10 +13,11 @@ const portNumber = ":8080"
 
 func main() {
 	appConfig := config.CreateNewConfigInstance()
-	renderer.SetTemplateCache(appConfig.GetTemplateCache())
+	rndr := renderer.CreateNewRenderTemplateInstance(appConfig.GetTemplateCache())
+	repo := handlers.CreateNewRepository(rndr)
 
-	http.HandleFunc("/", handlers.Home)
-	http.HandleFunc("/about", handlers.About)
+	http.HandleFunc("/", repo.Home)
+	http.HandleFunc("/about", repo.About)
 
 	fmt.Println("Started application on port: ", portNumber)
 	_ = http.ListenAndServe(portNumber, nil)
