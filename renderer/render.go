@@ -7,6 +7,8 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+
+	"github.com/Emrul-Hasan-Emon/application/model"
 )
 
 type RenderTemplate struct {
@@ -17,14 +19,14 @@ func CreateNewRenderTemplateInstance(cache map[string]*template.Template) *Rende
 	return &RenderTemplate{cache}
 }
 
-func (rndr *RenderTemplate) RenderTemplates(w http.ResponseWriter, tmpl string) {
+func (rndr *RenderTemplate) RenderTemplates(w http.ResponseWriter, tmpl string, templateData model.TemplateData) {
 	myTemplate, ok := rndr.templateCache[tmpl]
 	if !ok {
 		log.Fatal(errors.New("template is missing"))
 	}
 
 	buffer := new(bytes.Buffer)
-	_ = myTemplate.Execute(buffer, nil)
+	_ = myTemplate.Execute(buffer, templateData)
 
 	_, err := buffer.WriteTo(w)
 
