@@ -17,6 +17,7 @@ func SetRoutes(repo *handlers.Repository) *Router {
 
 	mux.Use(middleware.Recoverer)
 	mux.Use(middleware.Logger)
+	mux.Use(WriteToConsole)
 
 	mux.Get("/", repo.Home)
 	mux.Get("/about", repo.About)
