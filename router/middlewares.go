@@ -3,18 +3,19 @@ package router
 import (
 	"net/http"
 
-	"github.com/alexedwards/scs/v2"
+	"github.com/Emrul-Hasan-Emon/application/session"
 	"github.com/justinas/nosurf"
 )
 
 type MiddleWares struct {
-	session *scs.SessionManager
+	sessionManager *session.SessionManager
 }
 
-func CreateNewMiddlewareInstance(session *scs.SessionManager) *MiddleWares {
-	return &MiddleWares{session: session}
+func CreateNewMiddlewareInstance(sessionManager *session.SessionManager) *MiddleWares {
+	return &MiddleWares{sessionManager: sessionManager}
 }
 
+// no surf adds CSRF protection to all POST requests.
 func (m *MiddleWares) noSurf(next http.Handler) http.Handler {
 	csrfHandler := nosurf.New(next)
 	csrfHandler.SetBaseCookie(http.Cookie{
@@ -26,6 +27,7 @@ func (m *MiddleWares) noSurf(next http.Handler) http.Handler {
 	return csrfHandler
 }
 
+// sessionLoad middleware handles session
 func (m *MiddleWares) sessionLoad(next http.Handler) http.Handler {
-	return m.session.LoadAndSave(next)
+	return m.sessionManager.GetSession().LoadAndSave(next)
 }

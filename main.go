@@ -9,6 +9,7 @@ import (
 	"github.com/Emrul-Hasan-Emon/application/handlers"
 	"github.com/Emrul-Hasan-Emon/application/renderer"
 	"github.com/Emrul-Hasan-Emon/application/router"
+	"github.com/Emrul-Hasan-Emon/application/session"
 )
 
 const portNumber = ":8080"
@@ -17,7 +18,9 @@ func main() {
 	appConfig := config.CreateNewConfigInstance()
 	rndr := renderer.CreateNewRenderTemplateInstance(appConfig.GetTemplateCache())
 	repo := handlers.CreateNewRepository(rndr)
-	middlwares := router.CreateNewMiddlewareInstance(appConfig.GetSessionManager())
+
+	sessionManager := session.CreateNewSessionManager(appConfig.GetSessionManager())
+	middlwares := router.CreateNewMiddlewareInstance(sessionManager)
 	router := router.CreateNewRouterInstance(middlwares, repo)
 
 	server := http.Server{
