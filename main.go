@@ -21,7 +21,7 @@ func main() {
 
 	server := http.Server{
 		Addr:    portNumber,
-		Handler: router.Routes,
+		Handler: router.GetRoutes(),
 	}
 
 	fmt.Println("Started application on port: ", portNumber)

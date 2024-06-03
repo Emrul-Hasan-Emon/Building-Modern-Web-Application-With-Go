@@ -9,7 +9,7 @@ import (
 )
 
 type Router struct {
-	Routes http.Handler
+	routes http.Handler
 }
 
 func SetRoutes(repo *handlers.Repository) *Router {
@@ -22,6 +22,10 @@ func SetRoutes(repo *handlers.Repository) *Router {
 	mux.Get("/", repo.Home)
 	mux.Get("/about", repo.About)
 	return &Router{
-		Routes: mux,
+		routes: mux,
 	}
+}
+
+func (r *Router) GetRoutes() http.Handler {
+	return r.routes
 }
