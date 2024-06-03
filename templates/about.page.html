@@ -6,6 +6,13 @@
         <div class="col">
             <h1>Welcome</h1>
             <h3>This is About Page</h3>
+            <p>
+                {{ if ne (index .StringMap "remote_ip") ""}}
+                    Your remote IP Address is : {{ index .StringMap "remote_ip" }}
+                {{ else }}
+                    No IP Address is found.
+                {{ end }}
+            </p>
         </div>
     </div>
 </div>

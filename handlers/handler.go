@@ -18,13 +18,14 @@ func CreateNewRepository(rndr *renderer.RenderTemplate, sessionManager *session.
 }
 
 func (rp *Repository) Home(w http.ResponseWriter, r *http.Request) {
-	stringMap := make(map[string]string)
-	stringMap["test"] = "Data is coming from backend"
-	rp.rndr.RenderTemplates(w, "home.page.html", model.TemplateData{
-		StringMap: stringMap,
-	})
+	rp.sessionManager.SetSessionCookie(r)
+	rp.rndr.RenderTemplates(w, "home.page.html", model.TemplateData{})
 }
 
 func (rp *Repository) About(w http.ResponseWriter, r *http.Request) {
-	rp.rndr.RenderTemplates(w, "about.page.html", model.TemplateData{})
+	stringMap := make(map[string]string)
+	stringMap["remote_ip"] = rp.sessionManager.GetSessionCookie(r)
+	rp.rndr.RenderTemplates(w, "about.page.html", model.TemplateData{
+		StringMap: stringMap,
+	})
 }
