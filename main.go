@@ -17,10 +17,9 @@ const portNumber = ":8080"
 func main() {
 	appConfig := config.CreateNewConfigInstance()
 	rndr := renderer.CreateNewRenderTemplateInstance(appConfig.GetTemplateCache())
-	repo := handlers.CreateNewRepository(rndr)
-
 	sessionManager := session.CreateNewSessionManager(appConfig.GetSessionManager())
 	middlwares := router.CreateNewMiddlewareInstance(sessionManager)
+	repo := handlers.CreateNewRepository(rndr, sessionManager)
 	router := router.CreateNewRouterInstance(middlwares, repo)
 
 	server := http.Server{

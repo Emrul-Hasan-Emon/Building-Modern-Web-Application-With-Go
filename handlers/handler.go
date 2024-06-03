@@ -5,14 +5,16 @@ import (
 
 	"github.com/Emrul-Hasan-Emon/application/model"
 	"github.com/Emrul-Hasan-Emon/application/renderer"
+	"github.com/Emrul-Hasan-Emon/application/session"
 )
 
 type Repository struct {
-	rndr *renderer.RenderTemplate
+	rndr           *renderer.RenderTemplate
+	sessionManager *session.SessionManager
 }
 
-func CreateNewRepository(rndr *renderer.RenderTemplate) *Repository {
-	return &Repository{rndr}
+func CreateNewRepository(rndr *renderer.RenderTemplate, sessionManager *session.SessionManager) *Repository {
+	return &Repository{rndr, sessionManager}
 }
 
 func (rp *Repository) Home(w http.ResponseWriter, r *http.Request) {
