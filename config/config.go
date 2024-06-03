@@ -3,16 +3,25 @@ package config
 import (
 	"html/template"
 	"log"
+	"net/http"
 	"path/filepath"
+	"time"
+
+	"github.com/alexedwards/scs/v2"
 )
 
 // AppConfig holds the application configuration which will be accessible from anywhere of the application
 type AppConfig struct {
 	templateCache map[string]*template.Template
+	session       *scs.SessionManager
 }
 
 func (ac *AppConfig) GetTemplateCache() map[string]*template.Template {
 	return ac.templateCache
+}
+
+func (ac *AppConfig) GetSessionManager() *scs.SessionManager {
+	return ac.session
 }
 
 var functions = template.FuncMap{}
@@ -24,6 +33,7 @@ func CreateNewConfigInstance() *AppConfig {
 	}
 	return &AppConfig{
 		templateCache: templateCache,
+		session:       initiateSession(),
 	}
 }
 
@@ -56,4 +66,14 @@ func createTemplateCache() (map[string]*template.Template, error) {
 		myCache[name] = templateSet
 	}
 	return myCache, nil
+}
+
+func initiateSession() *scs.SessionManager {
+	session := scs.New()
+	session.Lifetime = 24 * time.Hour
+	session.Cookie.Persist = true
+	session.Cookie.SameSite = http.SameSiteLaxMode
+	session.Cookie.Secure = false
+
+	return session
 }
