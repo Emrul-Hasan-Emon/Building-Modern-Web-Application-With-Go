@@ -25,3 +25,7 @@ func (m *MiddleWares) noSurf(next http.Handler) http.Handler {
 	})
 	return csrfHandler
 }
+
+func (m *MiddleWares) sessionLoad(next http.Handler) http.Handler {
+	return m.session.LoadAndSave(next)
+}
