@@ -33,6 +33,7 @@ func setMiddlewares(mux *chi.Mux, middlewares *MiddleWares) {
 	mux.Use(middlewares.noSurf)
 	mux.Use(middleware.Recoverer)
 	mux.Use(middleware.Logger)
+	mux.Use(middlewares.sessionLoad)
 }
 
 func (r *Router) GetRoutes() http.Handler {
