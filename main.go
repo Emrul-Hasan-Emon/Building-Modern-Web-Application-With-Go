@@ -17,7 +17,8 @@ func main() {
 	appConfig := config.CreateNewConfigInstance()
 	rndr := renderer.CreateNewRenderTemplateInstance(appConfig.GetTemplateCache())
 	repo := handlers.CreateNewRepository(rndr)
-	router := router.SetRoutes(repo)
+	middlwares := router.CreateNewMiddlewareInstance(appConfig.GetSessionManager())
+	router := router.CreateNewRouterInstance(middlwares, repo)
 
 	server := http.Server{
 		Addr:    portNumber,
