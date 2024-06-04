@@ -26,6 +26,11 @@ func setRoutes(repo *handlers.Repository, middlewares *MiddleWares) http.Handler
 	setMiddlewares(mux, middlewares)
 	mux.Get("/", repo.Home)
 	mux.Get("/about", repo.About)
+
+	// creating file server for showing static data in the UI
+	fileServer := http.FileServer(http.Dir("./static/"))
+	mux.Handle("/static/*", http.StripPrefix("/static/", fileServer))
+
 	return mux
 }
 
