@@ -6,8 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- CSS for DateRangePicker package of Javascript -->
+    <!-- Link of the package: https://github.com/mymth/vanillajs-datepicker -->
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/css/datepicker-bs5.min.css">
+    <!-- CSS Link for Notie Package -->
+    <!-- Link: https://github.com/jaredreich/notie -->
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css">
 
     <title>Document</title>
 
@@ -93,6 +98,11 @@
                 </form>
             </div>
         </div>
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-success" id="color-button">Click Here</button>
+            </div>
+        </div>
     </div>
 
 
@@ -119,6 +129,8 @@
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/datepicker.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/datepicker-full.min.js"></script>
+    <!-- Java script for Notie Package. -->
+    <script src="https://unpkg.com/notie"></script>
 
     <script>
         (function () {
@@ -143,6 +155,17 @@
             format: 'yyyy-mm-dd',
             autohide: true
         });
+
+        document.getElementById('color-button').addEventListener('click', function () {
+            notify('This is the message', 'success');
+        });
+
+        function notify(msg, msgType) {
+            notie.alert({
+                type: msgType,
+                text: msg,
+            });
+        }
     </script>
 </body>
 
