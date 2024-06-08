@@ -13,23 +13,8 @@
     <!-- CSS Link for Notie Package -->
     <!-- Link: https://github.com/jaredreich/notie -->
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css">
-
+    <link rel="stylesheet" type="text/css" href="static/css/style.css">
     <title>Document</title>
-
-    <style>
-        .my-footer {
-            height: 5em;
-            background-color: #163b65;
-            margin-top: 1.5em;
-            padding: 1em;
-            color: #FFFFFF;
-            font-size: 10px;
-        }
-
-        .room-img {
-            max-width: 50%;
-        }
-    </style>
 </head>
 
 <body>
@@ -131,8 +116,10 @@
     <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/datepicker-full.min.js"></script>
     <!-- Java script for Notie Package. -->
     <script src="https://unpkg.com/notie"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+        let attention = prompt();
         (function () {
             window.addEventListener('load', function () {
                 // Fetch all the forms where we can want to add custom bootstrap validation
@@ -157,7 +144,28 @@
         });
 
         document.getElementById('color-button').addEventListener('click', function () {
-            notify('This is the message', 'success');
+            // callSweetAlert('Hello People', '<i>I am the Boos</i>', 'success', 'Okay');
+            console.log('Hello');
+            const msg = `
+                <form action="" method="post" id="check-availability" novalidate class="needs-validation">
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="form-row" id="open-date-modal">
+                                <div class="col">
+                                    <input required type="date" class="form-control" name="start" id="start" placeholder="Arrival">
+                                </div>
+                                <div class="col">
+                                    <input required type="date" class="form-control" name="start" id="end" placeholder="Departure">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            `;
+            attention.custom({
+                msg: msg,
+                title: 'Choose your Dates'
+            })
         });
 
         function notify(msg, msgType) {
@@ -165,6 +173,90 @@
                 type: msgType,
                 text: msg,
             });
+        }
+
+        function prompt() {
+            let toast = function (c) {
+                const {
+                    msg = "",
+                    icon = "success",
+                    position = "top-end",
+                } = c;
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    title: msg,
+                    position: position,
+                    icon: icon,
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({});
+            }
+
+            let success = function (c) {
+                const {
+                    msg = "",
+                    title = "",
+                    footer = "",
+                } = c;
+
+                Swal.fire({
+                    icon: 'success',
+                    title: title,
+                    text: msg,
+                    footer: footer
+                })
+            }
+
+            let error = function (c) {
+                const {
+                    msg = "",
+                    title = "",
+                    footer = "",
+                } = c;
+
+                Swal.fire({
+                    icon: 'error',
+                    title: title,
+                    text: msg,
+                    footer: footer
+                })
+            }
+
+            async function custom(c) {
+                const {
+                    msg = "",
+                    title = "",
+                } = c;
+                
+                const { value: formValues } = await Swal.fire({
+                    title: title,
+                    html: msg,
+                    showCancelButton: true,
+                    preConfirm: () => {
+                        return [
+                            document.getElementById("start").value,
+                            document.getElementById("end").value
+                        ];
+                    }
+                });
+                if (formValues) {
+                    Swal.fire(JSON.stringify(formValues));
+                }
+            }
+
+            return {
+                toast: toast,
+                success: success,
+                error: error,
+                custom: custom
+            }
         }
     </script>
 </body>
